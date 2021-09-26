@@ -12,7 +12,6 @@ program
 
 program
     .description('Dummy File Generator')
-    .option('-h, --help', 'output help')
 
 program
     .description('Define type of file')
@@ -36,10 +35,3 @@ program
 
 
 program.parse(process.argv)
-
-const options = program.opts()
-if (options.help) {
-    console.log(`${options.help}`)
-}
-
-
