@@ -2,12 +2,13 @@
 
 const { Command } = require('commander');
 const { Generator } = require('./generator.js')
+const pjson = require('./package.json')
 
 const program = new Command()
 const _g = new Generator()
 
 program
-    .version('0.0.55')
+    .version(pjson.version)
 
 program
     .description('Dummy File Generator')
