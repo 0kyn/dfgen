@@ -7,7 +7,7 @@ const program = new Command()
 const _g = new Generator()
 
 program
-    .version('0.0.4')
+    .version('0.0.45')
 
 program
     .description('Dummy File Generator')
