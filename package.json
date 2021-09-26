@@ -21,7 +21,7 @@
   "author": "0kyn",
   "license": "MIT",
   "bin": {
-    "dfgen": "node ./index.js"
+    "dfgen": "./index.js"
   },
   "bugs": {
     "url": "https://github.com/0kyn/dfgen/issues"
