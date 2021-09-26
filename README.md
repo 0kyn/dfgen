@@ -38,7 +38,7 @@ dfgen --type pdf --text-content "This is a text content"
 ```bash
 dfgen --type png --text-content "This is a text inside a png"
 
-dfgen index.js --type jpg --text-content "This is a text inside a jpg"
+dfgen --type jpg --text-content "This is a text inside a jpg"
 ```
 
 ## License
