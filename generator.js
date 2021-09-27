@@ -1,14 +1,13 @@
 const fs = require('fs');
-const PDFDocument = require('pdfkit')
 const { createCanvas } = require('canvas');
 
 class Generator {
     constructor(config) {
         this.config = config
-        this.params = {
-            output: this._setOutputFilename('dummy'),
-            fontSize: 25
-        }
+
+        this.config.mimeType = this._getMimeType(this.config.type)
+        this.config.output = this.config.output ?? this._setOutputFilename('dummy')
+        this.config.fontSize = 25
     }
 
     _setOutputFilename(prefix) {
@@ -24,40 +23,34 @@ class Generator {
         return outputFilename
     }
 
-    _genPdf() {
-        const doc = new PDFDocument()
-        doc.pipe(fs.createWriteStream(`${this.params.output}.pdf`))
-
-        if (this.params.textContent) {
-            doc
-                .fontSize(this.params.fontSize)
-                .text(this.params.textContent, 100, 100)
-
-        }
-        doc.end()
-    }
-
-    _genImage() {
-        const sizeSplit = this.params.widthHeight.split('/')
-        const width = parseInt(sizeSplit[0])
-        const height = parseInt(sizeSplit[1])
-        console.log(width, height)
-        const canvas = createCanvas(width, height)
+    _createCanvas(width, height, type = null) {
+        const canvas = createCanvas(width, height, type)
         const context = canvas.getContext('2d')
         context.fillStyle = '#fff'
         context.fillRect(0, 0, width, height)
 
-        if (this.params.textContent) {
-            const textContent = this.params.textContent
-            context.font = `bold ${this.params.fontSize}pt Arial`
+        if (this.config.textContent) {
+            const textContent = this.config.textContent
+            context.font = `bold ${this.config.fontSize}pt Arial`
             context.fillStyle = "#000"
             context.textAlign = 'center'
             context.fillText(textContent, width / 2, height / 2)
         }
 
-        const buffer = canvas.toBuffer(this.params.mimeType)
+        this.canvasBuffer = canvas.toBuffer(this.config.mimeType)
+    }
 
-        fs.writeFileSync(`${this.params.output}.${this.params.type}`, buffer)
+    _genPdf() {
+        this._createCanvas(595, 842, 'pdf')
+        fs.writeFileSync(`${this.config.output}.${this.config.type}`, this.canvasBuffer)
+    }
+
+    _genImage() {
+        const sizeSplit = this.config.widthHeight.split('/')
+        const width = parseInt(sizeSplit[0])
+        const height = parseInt(sizeSplit[1])
+        this._createCanvas(width, height)
+        fs.writeFileSync(`${this.config.output}.${this.config.type}`, this.canvasBuffer)
     }
 
     _genGif() {
@@ -75,19 +68,8 @@ class Generator {
         return mimeType[fileType];
     }
 
-    _setParams(params) {
-        for (let key in params) {
-            if (params[key]) {
-                this.params[key] = params[key]
-            }
-        }
-        this.params.mimeType = this._getMimeType(this.params.type)
-    }
-
-    make(params) {
-        this._setParams(params)
-
-        switch (this.params.type) {
+    make() {
+        switch (this.config.type) {
             case 'pdf':
                 this._genPdf()
                 break;

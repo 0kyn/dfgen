@@ -5,7 +5,6 @@ const { Generator } = require('./generator.js')
 const pjson = require('./package.json')
 
 const program = new Command()
-const _g = new Generator()
 
 program
     .version(pjson.version)
@@ -20,17 +19,18 @@ program
     .option('-txt, --text-content [txt]', 'customize text content')
     .option('-o, --output [filename]', 'output filename')
     .action((opt) => {
-        let params = {
+        let config = {
             type: opt.type,
             textContent: opt.textContent,
             output: opt.output
         }
 
         if (['jpg', 'png'].indexOf(opt.type) > -1) {
-            params.widthHeight = opt.widthHeight
+            config.widthHeight = opt.widthHeight
         }
 
-        _g.make(params)
+        const _g = new Generator(config)
+        _g.make()
     })
 
 

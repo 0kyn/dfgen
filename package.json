@@ -1,6 +1,6 @@
 {
   "name": "dfgen",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Dummy file generator",
   "main": "index.js",
   "scripts": {
