@@ -1,6 +1,6 @@
 const fs = require('fs');
 const PDFDocument = require('pdfkit')
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas } = require('canvas');
 
 class Generator {
     constructor(config) {
