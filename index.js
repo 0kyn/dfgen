@@ -25,7 +25,7 @@ program
             output: opt.output
         }
 
-        if (['jpg', 'png'].indexOf(opt.type) > -1) {
+        if (['jpg', 'png', 'gif'].indexOf(opt.type) > -1) {
             config.widthHeight = opt.widthHeight
         }
 

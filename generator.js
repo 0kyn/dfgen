@@ -1,5 +1,6 @@
 const fs = require('fs');
 const { createCanvas } = require('canvas');
+const GifEncoder = require('gif-encoder')
 
 class Generator {
     constructor(config) {
@@ -37,6 +38,7 @@ class Generator {
             context.fillText(textContent, width / 2, height / 2)
         }
 
+        this.canvasContext = context
         this.canvasBuffer = canvas.toBuffer(this.config.mimeType)
     }
 
@@ -50,11 +52,19 @@ class Generator {
         const width = parseInt(sizeSplit[0])
         const height = parseInt(sizeSplit[1])
         this._createCanvas(width, height)
-        fs.writeFileSync(`${this.config.output}.${this.config.type}`, this.canvasBuffer)
-    }
 
-    _genGif() {
-        console.log('@todo')
+        if(this.config.type !== 'gif'){
+            fs.writeFileSync(`${this.config.output}.${this.config.type}`, this.canvasBuffer)
+        } else {
+            const gif =  new GifEncoder(width, height)
+            const pixels = this.canvasContext.getImageData(0, 0, width, height).data
+            const file = fs.createWriteStream(`${this.config.output}.gif`)
+            
+            gif.pipe(file)
+            gif.writeHeader()
+            gif.addFrame(pixels)
+            gif.finish()
+        }
     }
 
     _getMimeType(fileType) {
@@ -75,10 +85,8 @@ class Generator {
                 break;
             case 'jpg':
             case 'png':
-                this._genImage()
-                break;
             case 'gif':
-                this._genGif()
+                this._genImage()
                 break;
             default:
                 break;

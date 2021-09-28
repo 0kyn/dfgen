@@ -1,6 +1,6 @@
 {
   "name": "dfgen",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Dummy file generator",
   "main": "index.js",
   "scripts": {
@@ -29,7 +29,8 @@
   "homepage": "https://github.com/0kyn/dfgen#readme",
   "dependencies": {
     "canvas": "^2.8.0",
-    "commander": "^8.2.0"
+    "commander": "^8.2.0",
+    "gif-encoder": "^0.7.2"
   },
   "devDependencies": {
     "eslint": "^7.32.0"
