@@ -7,7 +7,7 @@ class Generator {
         this.config = config
 
         this.config.mimeType = this._getMimeType(this.config.type)
-        this.config.output = this.config.output ?? this._setOutputFilename('dummy')
+        this.config.output = this.config.output ?? `${this._setOutputFilename('dummy')}.${this.config.type}`
         this.config.fontSize = 25
     }
 
@@ -44,7 +44,7 @@ class Generator {
 
     _genPdf() {
         this._createCanvas(595, 842, 'pdf')
-        fs.writeFileSync(`${this.config.output}.${this.config.type}`, this.canvasBuffer)
+        fs.writeFileSync(`${this.config.output}`, this.canvasBuffer)
     }
 
     _genImage() {
@@ -54,7 +54,7 @@ class Generator {
         this._createCanvas(width, height)
 
         if(this.config.type !== 'gif'){
-            fs.writeFileSync(`${this.config.output}.${this.config.type}`, this.canvasBuffer)
+            fs.writeFileSync(`${this.config.output}`, this.canvasBuffer)
         } else {
             const gif =  new GifEncoder(width, height)
             const pixels = this.canvasContext.getImageData(0, 0, width, height).data
