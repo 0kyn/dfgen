@@ -1,5 +1,5 @@
-const fs = require('fs');
-const { createCanvas } = require('canvas');
+const fs = require('fs')
+const { createCanvas } = require('canvas')
 const GifEncoder = require('gif-encoder')
 
 class Generator {
@@ -23,7 +23,7 @@ class Generator {
             gif: 'image/gif'
         }
 
-        return mimeType[fileType];
+        return mimeType[fileType]
     }
 
     _setOutputFilename(prefix) {
@@ -72,13 +72,13 @@ class Generator {
 
         this._createCanvas(width, height)
 
-        if(this.config.type !== 'gif'){
+        if (this.config.type !== 'gif') {
             fs.writeFileSync(this.config.output, this.canvasBuffer)
         } else {
-            const gif =  new GifEncoder(width, height)
+            const gif = new GifEncoder(width, height)
             const pixels = this.canvasContext.getImageData(0, 0, width, height).data
             const file = fs.createWriteStream(`${this.config.output}`)
-            
+
             gif.pipe(file)
             gif.writeHeader()
             gif.addFrame(pixels)
@@ -87,18 +87,18 @@ class Generator {
     }
 
     make() {
-        if(this._canWriteFile(this.config.output)){
+        if (this._canWriteFile(this.config.output)) {
             switch (this.config.type) {
                 case 'pdf':
                     this._genPdf()
-                    break;
+                    break
                 case 'jpg':
                 case 'png':
                 case 'gif':
                     this._genImage()
-                    break;
+                    break
                 default:
-                    break;
+                    break
             }
         } else {
             console.error(`File exists: ${this.config.output}. Use --force option to override file.`)
