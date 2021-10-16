@@ -26,6 +26,18 @@ class Generator {
         return mimeType[fileType]
     }
 
+    _getFileSignature(fileType) {
+        const fileSignature = {
+            invalid: [0, 1, 2, 3],
+            pdf: [0x25, 0x50, 0x44, 0x46],
+            jpg: [0xFF, 0xD8, 0xFF],
+            png: [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A],
+            gif: [0x47, 0x49, 0x46]
+        }
+
+        return fileSignature[fileType]
+    }
+
     _setOutputFilename(prefix) {
         const date = new Date()
 
@@ -86,6 +98,26 @@ class Generator {
         }
     }
 
+    corruptFile(filename, signatureType) {
+        const tmpFile = 'file.tmp'
+        const writeStream = fs.createWriteStream(tmpFile, { flags: 'w+' })
+        const signature = Buffer.from(this._getFileSignature(signatureType))
+
+        const readStream = fs.createReadStream(filename, { start: signature.length + 1 })
+        readStream.pipe(writeStream)
+
+        writeStream.on('finish', () => {
+            const readStream2 = fs.createReadStream(tmpFile)
+            const writeStream2 = fs.createWriteStream(filename, { start: 0, flags: 'r+' })
+            writeStream2.write(signature)
+            readStream2.pipe(writeStream2)
+
+            writeStream2.on('finish', () => {
+                fs.unlinkSync(tmpFile)
+            })
+        })
+    }
+
     make() {
         if (this._canWriteFile(this.config.output)) {
             switch (this.config.type) {
@@ -99,6 +131,9 @@ class Generator {
                     break
                 default:
                     break
+            }
+            if (this.config.corruptSignature) {
+                this.corruptFile(this.config.output, this.config.corruptSignature)
             }
         } else {
             console.error(`File exists: ${this.config.output}. Use --force option to override file.`)
