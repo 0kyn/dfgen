@@ -9,6 +9,10 @@ class Generator {
         this.config.mimeType = this._getMimeType(this.config.type)
         this.config.output = this.config.output ?? `${this._setOutputFilename('dummy')}.${this.config.type}`
         this.config.fontSize = 25
+
+        const widthHeightSplit = this.config.widthHeight.split('/')
+        this.config.width = parseInt(widthHeightSplit[0])
+        this.config.height = parseInt(widthHeightSplit[1])
     }
 
     _setOutputFilename(prefix) {
@@ -48,9 +52,9 @@ class Generator {
     }
 
     _genImage() {
-        const sizeSplit = this.config.widthHeight.split('/')
-        const width = parseInt(sizeSplit[0])
-        const height = parseInt(sizeSplit[1])
+        const width = this.config.width
+        const height = this.config.height
+
         this._createCanvas(width, height)
 
         if(this.config.type !== 'gif'){

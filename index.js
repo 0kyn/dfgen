@@ -19,17 +19,7 @@ program
     .option('-txt, --text-content [txt]', 'customize text content')
     .option('-o, --output [filename]', 'output filename')
     .action((opt) => {
-        let config = {
-            type: opt.type,
-            textContent: opt.textContent,
-            output: opt.output
-        }
-
-        if (['jpg', 'png', 'gif'].indexOf(opt.type) > -1) {
-            config.widthHeight = opt.widthHeight
-        }
-
-        const _g = new Generator(config)
+        const _g = new Generator(opt)
         _g.make()
     })
 
