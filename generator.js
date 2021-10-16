@@ -15,6 +15,17 @@ class Generator {
         this.config.height = parseInt(widthHeightSplit[1])
     }
 
+    _getMimeType(fileType) {
+        const mimeType = {
+            pdf: 'application/pdf',
+            jpg: 'image/jpeg',
+            png: 'image/png',
+            gif: 'image/gif'
+        }
+
+        return mimeType[fileType];
+    }
+
     _setOutputFilename(prefix) {
         const date = new Date()
 
@@ -73,17 +84,6 @@ class Generator {
             gif.addFrame(pixels)
             gif.finish()
         }
-    }
-
-    _getMimeType(fileType) {
-        const mimeType = {
-            pdf: 'application/pdf',
-            jpg: 'image/jpeg',
-            png: 'image/png',
-            gif: 'image/gif'
-        }
-
-        return mimeType[fileType];
     }
 
     make() {
