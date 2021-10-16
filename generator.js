@@ -62,7 +62,7 @@ class Generator {
         } else {
             const gif =  new GifEncoder(width, height)
             const pixels = this.canvasContext.getImageData(0, 0, width, height).data
-            const file = fs.createWriteStream(`${this.config.output}.gif`)
+            const file = fs.createWriteStream(`${this.config.output}`)
             
             gif.pipe(file)
             gif.writeHeader()
