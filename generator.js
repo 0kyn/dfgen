@@ -46,9 +46,13 @@ class Generator {
         this.canvasBuffer = canvas.toBuffer(this.config.mimeType)
     }
 
+    _canWriteFile(filename) {
+        return !fs.existsSync(filename) || this.config.force
+    }
+
     _genPdf() {
         this._createCanvas(595, 842, 'pdf')
-        fs.writeFileSync(`${this.config.output}`, this.canvasBuffer)
+        fs.writeFileSync(this.config.output, this.canvasBuffer)
     }
 
     _genImage() {
@@ -58,7 +62,7 @@ class Generator {
         this._createCanvas(width, height)
 
         if(this.config.type !== 'gif'){
-            fs.writeFileSync(`${this.config.output}`, this.canvasBuffer)
+            fs.writeFileSync(this.config.output, this.canvasBuffer)
         } else {
             const gif =  new GifEncoder(width, height)
             const pixels = this.canvasContext.getImageData(0, 0, width, height).data
@@ -83,17 +87,21 @@ class Generator {
     }
 
     make() {
-        switch (this.config.type) {
-            case 'pdf':
-                this._genPdf()
-                break;
-            case 'jpg':
-            case 'png':
-            case 'gif':
-                this._genImage()
-                break;
-            default:
-                break;
+        if(this._canWriteFile(this.config.output)){
+            switch (this.config.type) {
+                case 'pdf':
+                    this._genPdf()
+                    break;
+                case 'jpg':
+                case 'png':
+                case 'gif':
+                    this._genImage()
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            console.error(`File exists: ${this.config.output}. Use --force option to override file.`)
         }
     }
 }

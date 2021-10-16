@@ -18,6 +18,7 @@ program
     .option('-wh, --width-height [width/height]', 'width/height in px', '400/400')
     .option('-txt, --text-content [txt]', 'customize text content')
     .option('-o, --output [filename]', 'output filename')
+    .option('-f, --force', 'override existing file')
     .action((opt) => {
         const _g = new Generator(opt)
         _g.make()
