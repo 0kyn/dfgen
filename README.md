@@ -1,6 +1,6 @@
 # dfgen
 
-dfgen is a NodeJS command line interface that creates dummy files for testing purpose.
+[dfgen](https://www.npmjs.com/package/dfgen) is a NodeJS command line interface that creates dummy files for testing purpose.
 
 ## Installation
 
