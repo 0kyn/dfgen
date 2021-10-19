@@ -13,7 +13,6 @@ program
     .description('Dummy File Generator')
 
 program
-    .description('Define type of file')
     .option('-t, --type <type>', 'type of file (pdf|jpg|png)')
     .option('-wh, --width-height [width/height]', 'width/height in px', '400/400')
     .option('-txt, --text-content [txt]', 'customize text content')
