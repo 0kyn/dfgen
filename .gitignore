@@ -1,10 +1,12 @@
-*
+/*
 !.gitignore
 !.npmignore
 !README.md
 !LICENCE
-!generator.js
-!index.js
-!utils.js
 !package-lock.json
 !package.json
+
+!generator.js
+!index.js
+!/generators
+!/helpers

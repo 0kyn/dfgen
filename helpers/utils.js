@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 module.exports.getMimeType = (fileType) => {
     const mimeType = {
         pdf: 'application/pdf',
@@ -32,4 +34,24 @@ module.exports.getFileSignature = (fileType) => {
     }
 
     return fileSignature[fileType]
+}
+
+module.exports.corruptFile = (filename, signatureType) => {
+    const tmpFile = 'file.tmp'
+    const writeStream = fs.createWriteStream(tmpFile, { flags: 'w+' })
+    const signature = Buffer.from(this.getFileSignature(signatureType))
+
+    const readStream = fs.createReadStream(filename, { start: signature.length + 1 })
+    readStream.pipe(writeStream)
+
+    writeStream.on('finish', () => {
+        const readStream2 = fs.createReadStream(tmpFile)
+        const writeStream2 = fs.createWriteStream(filename, { start: 0, flags: 'r+' })
+        writeStream2.write(signature)
+        readStream2.pipe(writeStream2)
+
+        writeStream2.on('finish', () => {
+            fs.unlinkSync(tmpFile)
+        })
+    })
 }
