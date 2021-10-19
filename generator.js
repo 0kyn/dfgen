@@ -2,12 +2,14 @@ const fs = require('fs')
 const { createCanvas } = require('canvas')
 const GifEncoder = require('gif-encoder')
 
+const u = require('./utils.js')
+
 class Generator {
     constructor(config) {
         this.config = config
 
-        this.config.mimeType = this._getMimeType(this.config.type)
-        this.config.output = this.config.output ?? `${this._setOutputFilename('dummy')}.${this.config.type}`
+        this.config.mimeType = u.getMimeType(this.config.type)
+        this.config.output = this.config.output ?? u.setOutputFilename('dummy', this.config.type)
         this.config.fontSize = 25
 
         const widthHeightSplit = this.config.widthHeight.split('/')
@@ -15,40 +17,8 @@ class Generator {
         this.config.height = parseInt(widthHeightSplit[1])
     }
 
-    _getMimeType(fileType) {
-        const mimeType = {
-            pdf: 'application/pdf',
-            jpg: 'image/jpeg',
-            png: 'image/png',
-            gif: 'image/gif'
-        }
-
-        return mimeType[fileType]
-    }
-
-    _getFileSignature(fileType) {
-        const fileSignature = {
-            invalid: [0, 1, 2, 3],
-            pdf: [0x25, 0x50, 0x44, 0x46],
-            jpg: [0xFF, 0xD8, 0xFF],
-            png: [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A],
-            gif: [0x47, 0x49, 0x46]
-        }
-
-        return fileSignature[fileType]
-    }
-
-    _setOutputFilename(prefix) {
-        const date = new Date()
-
-        const dateIsoSplit = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().split('T')
-
-        const dateFormat = dateIsoSplit[0]
-        const hourFormat = dateIsoSplit[1].match(/(.*)\./)[1].replace(/:/g, '')
-
-        const outputFilename = `${prefix}-${dateFormat}-${hourFormat}`
-
-        return outputFilename
+    _canWriteFile(filename) {
+        return !fs.existsSync(filename) || this.config.force
     }
 
     _createCanvas(width, height, type = null) {
@@ -67,10 +37,6 @@ class Generator {
 
         this.canvasContext = context
         this.canvasBuffer = canvas.toBuffer(this.config.mimeType)
-    }
-
-    _canWriteFile(filename) {
-        return !fs.existsSync(filename) || this.config.force
     }
 
     _genPdf() {
@@ -101,7 +67,7 @@ class Generator {
     corruptFile(filename, signatureType) {
         const tmpFile = 'file.tmp'
         const writeStream = fs.createWriteStream(tmpFile, { flags: 'w+' })
-        const signature = Buffer.from(this._getFileSignature(signatureType))
+        const signature = Buffer.from(u.getFileSignature(signatureType))
 
         const readStream = fs.createReadStream(filename, { start: signature.length + 1 })
         readStream.pipe(writeStream)
