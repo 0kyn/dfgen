@@ -38,17 +38,17 @@ dfgen --type pdf --text-content "This is a text content"
 ```bash
 dfgen --type png --text-content "This is a text inside a png"
 
-dfgen --type jpg --text-content "This is a text inside a jpg"
+dfgen --type jpg --width-height "500/200" --text-content "This is a text inside a 500px * 200px jpg "
 ```
 
 ### Generate a corrupted file
 
 ```bash
-# you can basicly generate a file with a wrong extension
+# you can simply generate a file with a wrong extension
 dfgen --type jpg --output image.gif
 
 # you can also generate a file with an invalid signature
-dfgen --type jpg -cs invalid # this will replace the 4 first bytes with 0x00 0x01 0x02 0x03
+dfgen --type jpg --corrupt-signature invalid # this will replace the 4 first bytes with 0x00 0x01 0x02 0x03
 ```
 
 ## License
