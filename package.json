@@ -27,6 +27,11 @@
     "url": "https://github.com/0kyn/dfgen/issues"
   },
   "homepage": "https://github.com/0kyn/dfgen#readme",
+  "files": [
+    "generators/",
+    "helpers/",
+    "generator.js"
+  ],
   "dependencies": {
     "canvas": "^2.8.0",
     "commander": "^8.2.0",
