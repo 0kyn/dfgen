@@ -9,6 +9,10 @@ module.exports.getMimeType = (fileType) => {
         gif: 'image/gif'
     }
 
+    if (typeof mimeType[fileType] === 'undefined') {
+        this.exit('error', `'${fileType}' mime type is not supported`)
+    }
+
     return mimeType[fileType]
 }
 
@@ -32,6 +36,10 @@ module.exports.getFileSignature = (fileType) => {
         jpg: [0xFF, 0xD8, 0xFF],
         png: [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A],
         gif: [0x47, 0x49, 0x46]
+    }
+
+    if (typeof fileSignature[fileType] === 'undefined') {
+        this.exit('warning', `'${fileType}' signature is not supported. Cannot corrupt file.`)
     }
 
     return fileSignature[fileType]
@@ -66,7 +74,7 @@ module.exports.convertToBytes = (string) => {
     const match = string.match(/^((?:[0-9])+(?:\.)?(?:[0-9])+)(b|kb|mb)?$/)
 
     if (!match) {
-        throw new Error('Incorrect file size')
+        this.exit('warning', `'${string}' is an invalid value. Cannot alter file size.`)
     } else {
         const value = parseFloat(match[1])
         const unit = match[2] ?? 'b'
