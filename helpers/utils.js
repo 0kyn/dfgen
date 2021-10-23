@@ -1,6 +1,14 @@
 const fs = require('fs')
 const exiftool = require('../helpers/exiftool')
 
+module.exports.exit = (type, message, code = 1) => {
+    const prefix = type[0].toUpperCase() + type.slice(1)
+    type = type === 'warning' ? 'warn' : type
+
+    console[type](`${prefix}:`, message)
+    process.exit(code)
+}
+
 module.exports.getMimeType = (fileType) => {
     const mimeType = {
         pdf: 'application/pdf',
