@@ -63,7 +63,7 @@ module.exports.convertToBytes = (string) => {
         kb: 1000,
         mb: 1000000
     }
-    const match = string.match(/^(.+?)(b|kb|mb)?$/)
+    const match = string.match(/^((?:[0-9])+(?:\.)?(?:[0-9])+)(b|kb|mb)?$/)
 
     if (!match) {
         throw new Error('Incorrect file size')
