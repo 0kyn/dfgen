@@ -1,4 +1,5 @@
 const fs = require('fs')
+const exiftool = require('../helpers/exiftool')
 
 module.exports.getMimeType = (fileType) => {
     const mimeType = {
@@ -54,4 +55,48 @@ module.exports.corruptFile = (filename, signatureType) => {
             fs.unlinkSync(tmpFile)
         })
     })
+}
+
+module.exports.convertToBytes = (string) => {
+    const conversion = {
+        b: 1,
+        kb: 1000,
+        mb: 1000000
+    }
+    const match = string.match(/^(.+?)(b|kb|mb)?$/)
+
+    if (!match) {
+        throw new Error('Incorrect file size')
+    } else {
+        const value = parseFloat(match[1])
+        const unit = match[2] ?? 'b'
+        const valueInBytes = value * conversion[unit]
+
+        return valueInBytes
+    }
+}
+
+module.exports.genRandomString = (length) => {
+    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+
+    let string = ''
+    for (let i = 0; i < length; i++) {
+        string += chars[Math.floor(Math.random() * chars.length)]
+    }
+
+    return string
+}
+
+module.exports.setFileSize = (type, filename, filesize) => {
+    const originalFilesize = fs.statSync(filename).size
+
+    const newFilesize = this.convertToBytes(filesize)
+
+    const string = this.genRandomString(newFilesize)
+
+    const tags = type === 'pdf' ? { Description: string } : { Comment: string }
+
+    exiftool
+        .set(filename, tags)
+        .then(() => true)
 }

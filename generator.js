@@ -38,6 +38,9 @@ class Generator {
             if (this.config.corruptSignature) {
                 u.corruptFile(this.config.output, this.config.corruptSignature)
             }
+            if (this.config.fileSize) {
+                u.setFileSize(this.config.type, this.config.output, this.config.fileSize)
+            }
         } else {
             console.error(`File exists: ${this.config.output}. Use --force option to override file.`)
         }

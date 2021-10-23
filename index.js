@@ -15,6 +15,7 @@ program
 program
     .option('-t, --type <type>', 'type of file (pdf|jpg|png)')
     .option('-wh, --width-height [width/height]', 'width/height in px', '400/400')
+    .option('-fs --file-size <file-size>', 'define arbitrary file size (ex: 1.4mb or 1400000)')
     .option('-txt, --text-content [txt]', 'customize text content')
     .option('-o, --output [filename]', 'output filename')
     .option('-cs, --corrupt-signature <signature-name>', 'corrupt file signature type (invalid|pdf|png|jpg|gif)')

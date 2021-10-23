@@ -51,6 +51,16 @@ dfgen --type jpg --output image.gif
 dfgen --type jpg --corrupt-signature invalid # this will replace the 4 first bytes with 0x00 0x01 0x02 0x03
 ```
 
+### Generate a file with a specified size
+
+```bash
+# generate a file of 1.4 mb
+dfgen --type jpg --file-size 1400000
+
+# or
+dfgen --type jpg --file-size 1.4mb
+```
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
