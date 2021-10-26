@@ -7,5 +7,6 @@
 
 !generator.js
 !index.js
+!/data
 !/generators
 !/helpers
