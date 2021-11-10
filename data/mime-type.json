@@ -1,6 +1,6 @@
 {
-    "pdf": "application/pdf",
-    "jpg": "image/jpeg",
-    "png": "image/png",
-    "gif": "image/gif"
+  "pdf": "application/pdf",
+  "jpg": "image/jpeg",
+  "png": "image/png",
+  "gif": "image/gif"
 }

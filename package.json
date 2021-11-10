@@ -1,9 +1,12 @@
 {
   "name": "dfgen",
-  "version": "0.5.3",
+  "version": "0.5.5",
   "description": "Dummy file generator",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "lint": "eslint --ext .js,.cjs .",
+    "lint:fix": "eslint --fix --ext .js,.cjs .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -28,9 +31,8 @@
   },
   "homepage": "https://github.com/0kyn/dfgen#readme",
   "files": [
-    "generators/",
-    "helpers/",
-    "generator.js"
+    "data/",
+    "src/"
   ],
   "dependencies": {
     "canvas": "^2.8.0",
@@ -39,6 +41,11 @@
     "gif-encoder": "^0.7.2"
   },
   "devDependencies": {
-    "eslint": "^7.32.0"
+    "@types/node": "^16.11.6",
+    "eslint": "^7.32.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.1"
   }
 }

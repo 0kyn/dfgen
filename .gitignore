@@ -1,12 +1,14 @@
 /*
+
 !.gitignore
 !README.md
 !LICENCE
 !package-lock.json
 !package.json
 
-!generator.js
+!.editorconfig
+!.eslintrc.json
+
 !index.js
 !/data
-!/generators
-!/helpers
+!/src
