@@ -1,5 +1,4 @@
 import * as fs from 'fs'
-import * as path from 'path'
 import * as exiftool from './exiftool.js'
 
 export function exit (type, message, code = 1) {
@@ -17,7 +16,7 @@ export function getJson (filename) {
 }
 
 export function getMimeType (fileType) {
-  const mimeType = this.getJson(path.join(path.resolve(), 'data/mime-type.json'))
+  const mimeType = this.getJson(new URL('../../data/mime-type.json', import.meta.url))
 
   if (typeof mimeType[fileType] === 'undefined') {
     this.exit('error', `'${fileType}' mime type is not supported`)
@@ -40,7 +39,7 @@ export function setOutputFilename (prefix, extension) {
 }
 
 export function getFileSignature (fileType) {
-  const fileSignature = this.getJson(path.join(path.resolve(), 'data/file-signature.json'))
+  const fileSignature = this.getJson(new URL('../../data/file-signature.json', import.meta.url))
 
   if (typeof fileSignature[fileType] === 'undefined') {
     this.exit('warning', `'${fileType}' signature is not supported. Cannot corrupt file.`)
