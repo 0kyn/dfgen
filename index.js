@@ -2,8 +2,10 @@
 import { Command } from 'commander'
 import { Generator } from './src/generator.js'
 import { getJson } from './src/helpers/utils.js'
-const pjson = getJson('./package.json')
+import {fileURLToPath} from 'url';
+import path from 'path'
 
+const pjson = getJson(path.dirname(fileURLToPath(import.meta.url)) + '/package.json')
 const program = new Command()
 
 program
